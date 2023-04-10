@@ -1,0 +1,78 @@
+{% load static %}
+                <div class="col-md-12 col-lg-4 sidebar">
+                    <div class="sidebar-box search-form-wrap">
+                        <form method="post" class="search-form">
+                        {% csrf_token %}
+                            <div class="form-group">
+                                <span class="icon fa fa-search"></span>
+                                <input type="text" name="q" class="form-control" id="s"
+                                       placeholder="Search...">
+                            </div>
+                        </form>
+                    </div>
+                    {% for profile in profiles %}
+                    <div class="sidebar-box">
+                        <div class="bio text-center">
+                            {% if profile.avatar %}
+                            <img src="{{ profile.avatar.url }}" alt="Image Placeholder" class="img-fluid">
+                            {% else %}
+                             <img src="{% static 'images/user.png' %}" alt="Image Placeholder" class="img-fluid">
+                            {% endif %}
+                            <div class="bio-body">
+                                <h2>{{ profile.author }}</h2>
+                                <p>{{ profile.bio }}</p>
+                                <p><a href="{% url 'about:about' %}" class="btn btn-primary btn-sm rounded">Read my bio</a></p>
+                                <p class="social">
+                                    <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
+                                    <a href="#" class="p-2"><span class="fa fa-twitter"></span></a>
+                                    <a href="#" class="p-2"><span class="fa fa-instagram"></span></a>
+                                    <a href="#" class="p-2"><span class="fa fa-youtube-play"></span></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="sidebar-box">
+                        <h3 class="heading">Popular Posts</h3>
+                        <div class="post-entry-sidebar">
+                            <ul>
+                                <li>
+                                    {% for obj in objects %}
+                                    <a href="{% url 'project:detail'  obj.id %}">
+                                        <img src="{{ obj.image.url }}" alt="Image placeholder" class="mr-4">
+                                        <div class="text">
+                                            <h4>{{ obj.title }}</h4>
+                                            <div class="post-meta">
+                                                <span class="mr-2">{{ obj.created_date|date:'M d, Y'}} </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                     {% endfor %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-box">
+                        <h3 class="heading">Category</h3>
+                        <ul class="categories">
+                            {% for category in categories %}
+                            <li><a href="/category/?cat={{ category.title }}">{{ category.title }} <span>({{ category.article_set.count }})</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-box">
+                        <h3 class="heading">Tags</h3>
+                        <ul class="tags">
+                            {% for tag in tags %}
+                            <li><a href="/category/?tag={{ tag.title }}">{{ tag.title }} <span>({{ tag.article_set.count }})</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
